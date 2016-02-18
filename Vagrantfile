@@ -138,6 +138,7 @@ Vagrant.configure("2") do |config|
       end
 
       config.vm.provider :virtualbox do |vb|
+        vb.name = vm_name
         vb.gui = vm_gui
         vb.memory = vm_memory
         vb.cpus = vm_cpus

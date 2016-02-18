@@ -14,6 +14,9 @@ coreos:
     wal-dir: /var/lib/etcd2/wal
   flannel:
     interface: $public_ipv4
+  update:
+    group: alpha
+    reboot-strategy: best-effort
   units:
     - name: etcd2.service
       command: start
@@ -22,7 +25,7 @@ coreos:
       - name: 50-network-config.conf
         content: |
           [Service]
-          ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.200.0.0/16" }'
+          ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.200.0.0/16", "Backend": {"Type": "host-gw"} }'
       command: start
     - name: docker-tcp.socket
       command: start
@@ -38,3 +41,4 @@ coreos:
 
         [Install]
         WantedBy=sockets.target
+  manage_etc_hosts: localhost
